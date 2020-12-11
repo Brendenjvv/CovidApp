@@ -1,24 +1,28 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import { CovidStoreService } from '../../services/covid-store.service';
+import { ViewComponentBase } from '../../classes/view-component-base';
+import { CountriesService } from '../../services/countries.service';
 
 @Component({
   selector: 'app-countries',
   templateUrl: './countries.component.html',
   styleUrls: ['./countries.component.scss']
 })
-export class CountriesComponent implements OnInit, OnDestroy {
+export class CountriesComponent extends ViewComponentBase implements OnInit, OnDestroy {
 
   destroy$: Subject<boolean> = new Subject<boolean>();
+  countryData$;
 
   displayedColumns = ['Continent', 'Country', 'New'];
 
-  constructor(private covidStoreService: CovidStoreService) { }
+  constructor(private countriesService: CountriesService) { 
+    super();
+  }
 
   ngOnInit(): void {
-    // NgRx action equivalent. 
-    this.covidStoreService.updateStore();
+    this.subToCountryData();
+    this.requestDataRefresh();
   }
 
   ngOnDestroy(): void {
@@ -28,19 +32,7 @@ export class CountriesComponent implements OnInit, OnDestroy {
 
   // Subscribes to 'store' and will return formatted observable when triggered.
   // This will update the table.
-  // Sorted by continent asc.
-  getCountryData() {
-    return this.covidStoreService.covidData$.pipe(
-      takeUntil(this.destroy$),
-      map((res) => {
-        return Object.keys(res).map(country => {
-          return {
-            continent: res[country].continent,
-            country,
-            new: new Number(res[country].cases.new)
-          }
-        }).sort((a, b) => (a.continent.localeCompare(b.continent)));
-      }));
+  subToCountryData() {
+    this.countryData$ = this.countriesService.getCountryData().pipe(takeUntil(this.destroy$));
   }
-
 }
