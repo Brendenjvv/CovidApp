@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CovidStoreService } from 'src/app/services/covid-store.service';
 
 @Component({
   selector: 'app-continents',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContinentsComponent implements OnInit {
 
-  constructor() { }
+  constructor(public covidStoreService: CovidStoreService) { }
 
   ngOnInit(): void {
+    this.covidStoreService.updateStore();
   }
 
 }

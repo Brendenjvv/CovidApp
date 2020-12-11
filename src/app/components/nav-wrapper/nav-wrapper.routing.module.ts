@@ -10,6 +10,11 @@ const routes: Routes = [{
 {
     path: 'continents',
     component: ContinentsComponent
+},
+{
+    path: '',
+    pathMatch: 'full',
+    redirectTo: '/continents'
 }];
 
 @NgModule({
