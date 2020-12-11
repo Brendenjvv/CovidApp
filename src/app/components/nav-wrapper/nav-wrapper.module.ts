@@ -6,16 +6,17 @@ import { MatButtonModule } from '@angular/material/button'
 import { NavWrapperRoutingModule } from './nav-wrapper.routing.module';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { CountriesModule } from '../countries/countries.module';
 
 @NgModule({
     declarations: [
         ContinentsComponent,
-        ContinentsComponent,
         NavWrapperComponent
     ],
-    imports: [
+    imports: [    
         CommonModule,
         HttpClientModule,
+        CountriesModule,
         NavWrapperRoutingModule,
         MatToolbarModule,
         MatButtonModule
@@ -23,8 +24,5 @@ import { HttpClientModule } from '@angular/common/http';
     exports: [
         NavWrapperComponent
     ]
-
 })
-export class NavWrapperModule {
-
-}
+export class NavWrapperModule { }
