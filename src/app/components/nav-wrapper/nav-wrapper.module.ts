@@ -4,6 +4,8 @@ import { NavWrapperComponent } from './nav-wrapper.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button'
 import { NavWrapperRoutingModule } from './nav-wrapper.routing.module';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -12,6 +14,8 @@ import { NavWrapperRoutingModule } from './nav-wrapper.routing.module';
         NavWrapperComponent
     ],
     imports: [
+        CommonModule,
+        HttpClientModule,
         NavWrapperRoutingModule,
         MatToolbarModule,
         MatButtonModule
