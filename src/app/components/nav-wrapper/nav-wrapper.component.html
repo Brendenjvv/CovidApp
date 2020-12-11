@@ -1,3 +1,4 @@
+<div style="height: 100%;">
 <mat-toolbar color="primary">
     <mat-toolbar-row>
         <span>Covid App</span>
@@ -8,7 +9,11 @@
         <button mat-button color="secondary" routerLink="/countries" routerLinkActive="mat-accent">
             Countries
         </button>
+        <button mat-icon-button aria-label="Refresh" (click)="refreshStoreData()">
+            <mat-icon>refresh</mat-icon>
+        </button>
     </mat-toolbar-row>
 </mat-toolbar>
 
-<router-outlet></router-outlet>
+<router-outlet (activate)="onActivate($event)" (deactivate)="onDeactivate()"></router-outlet>
+</div>

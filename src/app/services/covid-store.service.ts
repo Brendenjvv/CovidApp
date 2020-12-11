@@ -8,13 +8,14 @@ import { CovidService } from './covid.service';
     providedIn: 'root'
 })
 export class CovidStoreService {
-    
+
     // Used a subject to simulate a store. Wasn't sure if I could use @ngrx/store since the spec calls for native angular libs. 
     covidData$ = new Subject<CovidStoreState>();
 
     constructor(private covidService: CovidService) {}
 
     updateStore() {
+        this.covidData$.next({});
         const statResult$ = this.covidService.getStatistics()
         .subscribe((res) => {
             this.covidData$.next(this.formatStatData(res));
