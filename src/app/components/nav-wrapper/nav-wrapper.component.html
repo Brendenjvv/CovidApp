@@ -1,7 +1,6 @@
-<div style="height: 100%;">
-<mat-toolbar color="primary">
+<mat-toolbar class="stickyBar" color="primary">
     <mat-toolbar-row>
-        <span>Covid App</span>
+        <span>App</span>
         <span></span>
         <button mat-button color="secondary" routerLink="/continents" routerLinkActive="mat-accent">
             Continents
@@ -14,6 +13,6 @@
         </button>
     </mat-toolbar-row>
 </mat-toolbar>
-
-<router-outlet (activate)="onActivate($event)" (deactivate)="onDeactivate()"></router-outlet>
+<div class="content">
+    <router-outlet (activate)="onActivate($event)" (deactivate)="onDeactivate()"></router-outlet>
 </div>

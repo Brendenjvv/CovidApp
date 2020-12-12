@@ -4,14 +4,14 @@ import { MatTableModule } from '@angular/material/table';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { CountriesService } from '../../services/countries.service';
-import { VarDirective } from 'src/app/directives/var.directive';
+import { ContentViewModule } from 'src/app/modules/content-view-module';
 
 @NgModule({
     declarations: [
-        CountriesComponent,
-        VarDirective
+        CountriesComponent
     ],
     imports: [
+        ContentViewModule,
         CommonModule,
         MatTableModule,
         MatProgressSpinnerModule

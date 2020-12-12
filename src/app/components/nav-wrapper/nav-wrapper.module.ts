@@ -8,16 +8,18 @@ import { NavWrapperRoutingModule } from './nav-wrapper.routing.module';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { CountriesModule } from '../countries/countries.module';
+import { ContinentsModule } from '../continents/continents.module';
+import { VarDirective } from 'src/app/directives/var.directive';
 
 @NgModule({
     declarations: [
-        ContinentsComponent,
         NavWrapperComponent
     ],
     imports: [
         CommonModule,
         HttpClientModule,
         CountriesModule,
+        ContinentsModule,
         NavWrapperRoutingModule,
         MatToolbarModule,
         MatButtonModule,

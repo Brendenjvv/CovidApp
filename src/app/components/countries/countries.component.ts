@@ -14,7 +14,7 @@ export class CountriesComponent extends ViewComponentBase implements OnInit, OnD
   destroy$: Subject<boolean> = new Subject<boolean>();
   countryData$;
 
-  displayedColumns = ['Continent', 'Country', 'New'];
+  displayedColumns = ['Continent', 'Country', 'New', 'NewPerc', 'Active', 'ActivePerc', 'Deaths', 'DeathPerc'];
 
   constructor(private countriesService: CountriesService) { 
     super();
