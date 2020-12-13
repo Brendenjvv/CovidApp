@@ -13,6 +13,9 @@
         </button>
     </mat-toolbar-row>
 </mat-toolbar>
+<div *ngIf="busy$ | async" class="loading-container">
+    <mat-spinner color="accent"></mat-spinner>
+</div>
 <div class="content">
     <router-outlet (activate)="onActivate($event)" (deactivate)="onDeactivate()"></router-outlet>
 </div>

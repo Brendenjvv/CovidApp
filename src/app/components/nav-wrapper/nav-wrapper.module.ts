@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { CountriesModule } from '../countries/countries.module';
 import { ContinentsModule } from '../continents/continents.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
     declarations: [
@@ -19,6 +20,7 @@ import { ContinentsModule } from '../continents/continents.module';
         CountriesModule,
         ContinentsModule,
         NavWrapperRoutingModule,
+        MatProgressSpinnerModule,
         MatToolbarModule,
         MatButtonModule,
         MatIconModule
