@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ViewComponentBase } from '../../classes/view-component-base';
-import { CountriesService } from '../../services/countries.service';
+import { CovidViewService } from '../../services/covid-view.service';
 
 @Component({
   selector: 'app-countries',
@@ -10,13 +10,10 @@ import { CountriesService } from '../../services/countries.service';
   styleUrls: ['./countries.component.scss']
 })
 export class CountriesComponent extends ViewComponentBase implements OnInit, OnDestroy {
-
-  destroy$: Subject<boolean> = new Subject<boolean>();
   countryData$;
-
   displayedColumns = ['Continent', 'Country', 'New', 'NewPerc', 'Active', 'ActivePerc', 'Deaths', 'DeathPerc'];
 
-  constructor(private countriesService: CountriesService) { 
+  constructor(private viewService: CovidViewService) { 
     super();
   }
 
@@ -26,13 +23,12 @@ export class CountriesComponent extends ViewComponentBase implements OnInit, OnD
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+    this.destroy();
   }
 
   // Subscribes to 'store' and will return formatted observable when triggered.
   // This will update the table.
   subToCountryData() {
-    this.countryData$ = this.countriesService.getCountryData().pipe(takeUntil(this.destroy$));
+    this.countryData$ = this.viewService.getCountryData().pipe(takeUntil(this.destroy$));
   }
 }

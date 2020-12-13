@@ -1,6 +1,6 @@
-
-import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { delay, delayWhen, takeUntil } from 'rxjs/operators';
 import { ViewComponentBase } from '../../classes/view-component-base';
 import { CovidStoreService } from '../../services/covid-store.service';
 
@@ -9,27 +9,33 @@ import { CovidStoreService } from '../../services/covid-store.service';
   templateUrl: './nav-wrapper.component.html',
   styleUrls: ['./nav-wrapper.component.scss']
 })
-export class NavWrapperComponent implements OnInit {
-  refreshSub$: Subscription;
+export class NavWrapperComponent implements OnInit, OnDestroy {
+  busy$: Observable<boolean>;
+  deactivated$: Subject<boolean> = new Subject();
 
   constructor(private covidStoreService: CovidStoreService) { }
 
   ngOnInit(): void {
+    this.busy$ = this.covidStoreService.loading$;
+  }
+
+  ngOnDestroy(): void {
+    this.busy$ = null;
+    this.deactivated$.next(true);
+    this.deactivated$ = null;
   }
 
   onActivate(event) {
     if (event instanceof ViewComponentBase) {
-      this.refreshSub$ = event.onRefreshRequested.subscribe(() => this.refreshStoreData());
+      event.refreshRequested$.pipe(takeUntil(this.deactivated$)).subscribe(() => this.refreshStoreData(false));
     }
   }
 
   onDeactivate() {
-    if (this.refreshSub$) {
-      this.refreshSub$.unsubscribe();
-    }
+    this.deactivated$.next(true);
   }
 
-  refreshStoreData() {
-    this.covidStoreService.updateStore()
+  refreshStoreData(force = true) {
+    this.covidStoreService.updateStore(force);
   }
 }

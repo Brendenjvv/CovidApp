@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil, takeWhile } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { ViewComponentBase } from '../../classes/view-component-base';
-import { ContinentsService } from '../../services/continents.service';
+import { CovidViewService } from '../../services/covid-view.service';
 
 @Component({
   selector: 'app-continents',
@@ -10,13 +9,10 @@ import { ContinentsService } from '../../services/continents.service';
   styleUrls: ['./continents.component.scss']
 })
 export class ContinentsComponent extends ViewComponentBase implements OnInit, OnDestroy {
-
-  destroy$: Subject<boolean> = new Subject<boolean>();
   continentData$;
-
   displayedColumns = ['Continent', 'New', 'NewPerc', 'Active', 'ActivePerc', 'Deaths', 'DeathPerc'];
 
-  constructor(public continentsService: ContinentsService) { 
+  constructor(public viewService: CovidViewService) { 
     super();
   }
 
@@ -26,12 +22,11 @@ export class ContinentsComponent extends ViewComponentBase implements OnInit, On
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+    this.destroy();
   }
 
   private subToContinentData(){
-    this.continentData$ =  this.continentsService.getContinentData().pipe(takeUntil(this.destroy$));
+    this.continentData$ =  this.viewService.getContinentData().pipe(takeUntil(this.destroy$));
   }
 
 

@@ -2,14 +2,20 @@ import { OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export abstract class ViewComponentBase {
-    onRefreshRequested: Subject<boolean>;
+    refreshRequested$: Subject<boolean>;
+    destroy$: Subject<boolean>;
 
     constructor() {
-        this.onRefreshRequested = new Subject();
+        this.refreshRequested$ = new Subject<boolean>();
+        this.destroy$ = new Subject<boolean>();
     }
-    
 
     public requestDataRefresh() {
-        this.onRefreshRequested.next();
+        this.refreshRequested$.next(true);
+    }
+
+    public destroy(){
+        this.destroy$.next(true);
+        this.destroy$ = null;
     }
 }

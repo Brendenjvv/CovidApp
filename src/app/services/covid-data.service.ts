@@ -8,7 +8,7 @@ import { DatePipe } from '@angular/common'
 @Injectable({
     providedIn: 'root'
 })
-export class CovidService {
+export class CovidDataService {
 
     private rapidApiHost = "covid-193.p.rapidapi.com";
 

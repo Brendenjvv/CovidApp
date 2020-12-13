@@ -1,11 +1,7 @@
 <!-- Default View -->
 <ng-container *mediaQuery="'(min-width: 412px)'">
     <ng-container *ngVar="countryData$ | async as data">
-        <div *ngIf="!data" class="loading-container">
-            <mat-spinner color="accent"></mat-spinner>
-        </div>
         <div style="margin-top: 60px;">
-
             <table *ngIf="data" #stickyHeaders mat-table [dataSource]="data">
                 <ng-container matColumnDef="Continent">
                     <th mat-header-cell *matHeaderCellDef> Continent </th>
@@ -47,7 +43,7 @@
                     <td mat-cell *matCellDef="let item"> {{item.percDeathsOfContinent}}% </td>
                 </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
         </div>

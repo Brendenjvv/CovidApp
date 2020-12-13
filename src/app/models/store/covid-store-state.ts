@@ -7,5 +7,6 @@ export interface ICovidStoreState {
     },
     continentStats?: {
         [key: string]: IContinentStatStoreState
-    }
+    },
+    lastRefresh?: Date
 }

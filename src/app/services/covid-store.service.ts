@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs/operators';
 import { IStatistic } from '../models/api/statistic';
 import { ICountryStatStoreState } from '../models/store/country-store-state';
 import { ICovidStoreState } from '../models/store/covid-store-state';
 import { IContinentStatStoreState } from '../models/store/continent-store-state';
-import { CovidService } from './covid.service';
+import { CovidDataService } from './covid-data.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,24 +14,39 @@ export class CovidStoreService {
 
     // Used a subject to simulate a store. Wasn't sure if I could use @ngrx/store since the spec calls for native angular libs. 
     covidData$ = new BehaviorSubject<ICovidStoreState>(undefined);
+    loading$ = new BehaviorSubject<boolean>(false);
 
-    constructor(private covidService: CovidService) { }
+    constructor(private covidService: CovidDataService) { }
 
-    updateStore() {
-        const countries$ = this.covidService.getCountryList(); 
+    updateStore(forceUpdate = false) {
+        const currentVal = this.covidData$.getValue();
+
+        // Added a check for data age to prevent api spamming on navigation.
+        // Data older than 1 minute is considered stale.
+        // Hitting the refresh button will force the update.
+        if (currentVal && currentVal.lastRefresh && !forceUpdate) {
+            const minDiff = Math.round(((new Date()).getTime() - currentVal.lastRefresh.getTime()) / 60000);
+            if (minDiff < 1) return;
+        }
+
+        const countries$ = this.covidService.getCountryList();
         const stats$ = this.covidService.getStatistics();
 
+        this.loading$.next(true);
         const statResult$ = forkJoin([countries$, stats$]).pipe(
             tap((res) => {
                 this.covidData$.next(this.populateStore(res[0], res[1]));
-            }))
+            }),
+            finalize(() => this.loading$.next(false)))
             .subscribe(() => {
                 statResult$.unsubscribe();
             });
     }
 
     private populateStore(countries: string[], stats: IStatistic[]) {
-        let state: ICovidStoreState = {};
+        let state: ICovidStoreState = {
+            lastRefresh: new Date()
+        };
         if (countries && stats) {
             let countryStats: { [key: string]: ICountryStatStoreState } = {};
             let continentStats: { [key: string]: IContinentStatStoreState } = {};
