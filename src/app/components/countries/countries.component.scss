@@ -3,10 +3,33 @@ table {
     height: 100%;
 }
 
+.mat-table {
+    top: 60px;
+}
+
+.header-group-row {
+    th {
+    border-bottom: none;
+    padding: 0;
+    }
+}
+
+.header-group-cell {
+    text-align: left;
+}
+
 .loading-container{
     height: 100%;
 }
 
 .mat-spinner {
     margin: auto
+}
+
+.mobile-view-wrapper {
+    padding: 10px;
+}
+
+.mat-card {
+    margin-bottom: 10px;
 }
