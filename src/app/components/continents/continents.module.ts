@@ -2,8 +2,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
-import { VarDirective } from 'src/app/directives/var.directive';
-import { ContentViewModule } from 'src/app/modules/content-view-module';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { ContentViewModule } from '../../modules/content-view-module';
 import { ContinentsService } from '../../services/continents.service';
 import { ContinentsComponent } from './continents.component';
 
@@ -15,7 +16,9 @@ import { ContinentsComponent } from './continents.component';
         ContentViewModule,
         CommonModule,
         MatTableModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatCardModule,
+        MatListModule
     ],
     providers: [
         ContinentsService

@@ -1,49 +1,75 @@
-<ng-container *ngVar="countryData$ | async as data">
-    <div *ngIf="!data" class="loading-container">
-        <mat-spinner color="accent"></mat-spinner>
-    </div>
-    <table *ngIf="data" #stickyHeaders mat-table [dataSource]="data">
-        <ng-container matColumnDef="Continent">
-            <th mat-header-cell *matHeaderCellDef> Continent </th>
-            <td mat-cell *matCellDef="let item"> {{item.continent}} </td>
-        </ng-container>
+<!-- Default View -->
+<ng-container *mediaQuery="'(min-width: 412px)'">
+    <ng-container *ngVar="countryData$ | async as data">
+        <div *ngIf="!data" class="loading-container">
+            <mat-spinner color="accent"></mat-spinner>
+        </div>
+        <div style="margin-top: 60px;">
 
-        <ng-container matColumnDef="Country">
-            <th mat-header-cell *matHeaderCellDef> Country </th>
-            <td mat-cell *matCellDef="let item"> {{item.country}} </td>
-        </ng-container>
+            <table *ngIf="data" #stickyHeaders mat-table [dataSource]="data">
+                <ng-container matColumnDef="Continent">
+                    <th mat-header-cell *matHeaderCellDef> Continent </th>
+                    <td mat-cell *matCellDef="let item"> {{item.continent}} </td>
+                </ng-container>
 
-        <ng-container matColumnDef="New">
-            <th mat-header-cell *matHeaderCellDef> New Cases</th>
-            <td mat-cell *matCellDef="let item"> {{item.newCases}} </td>
-        </ng-container>
+                <ng-container matColumnDef="Country">
+                    <th mat-header-cell *matHeaderCellDef> Country </th>
+                    <td mat-cell *matCellDef="let item"> {{item.country}} </td>
+                </ng-container>
 
-        <ng-container matColumnDef="NewPerc">
-            <th mat-header-cell *matHeaderCellDef>New Percentage of Continent</th>
-            <td mat-cell *matCellDef="let item"> {{item.percNewOfContinent}}% </td>
-        </ng-container>
+                <ng-container matColumnDef="New">
+                    <th mat-header-cell *matHeaderCellDef>New Cases</th>
+                    <td mat-cell *matCellDef="let item"> {{item.newCases}} </td>
+                </ng-container>
 
-        <ng-container matColumnDef="Active">
-            <th mat-header-cell *matHeaderCellDef> Active Cases</th>
-            <td mat-cell *matCellDef="let item"> {{item.activeCases}} </td>
-        </ng-container>
+                <ng-container matColumnDef="NewPerc">
+                    <th mat-header-cell *matHeaderCellDef>% of Continent</th>
+                    <td mat-cell *matCellDef="let item"> {{item.percNewOfContinent}}% </td>
+                </ng-container>
 
-        <ng-container matColumnDef="ActivePerc">
-            <th mat-header-cell *matHeaderCellDef> Active Percentage of Continent</th>
-            <td mat-cell *matCellDef="let item"> {{item.percActiveOfContinent}}% </td>
-        </ng-container>
+                <ng-container matColumnDef="Active">
+                    <th mat-header-cell *matHeaderCellDef>Active Cases</th>
+                    <td mat-cell *matCellDef="let item"> {{item.activeCases}} </td>
+                </ng-container>
 
-        <ng-container matColumnDef="Deaths">
-            <th mat-header-cell *matHeaderCellDef> Deaths</th>
-            <td mat-cell *matCellDef="let item"> {{item.deaths}} </td>
-        </ng-container>
+                <ng-container matColumnDef="ActivePerc">
+                    <th mat-header-cell *matHeaderCellDef> % of Continent</th>
+                    <td mat-cell *matCellDef="let item"> {{item.percActiveOfContinent}}% </td>
+                </ng-container>
 
-        <ng-container matColumnDef="DeathPerc">
-            <th mat-header-cell *matHeaderCellDef> Death Percentage of Continent</th>
-            <td mat-cell *matCellDef="let item"> {{item.percDeathsOfContinent}}% </td>
-        </ng-container>
+                <ng-container matColumnDef="Deaths">
+                    <th mat-header-cell *matHeaderCellDef> Deaths</th>
+                    <td mat-cell *matCellDef="let item"> {{item.deaths}} </td>
+                </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+                <ng-container matColumnDef="DeathPerc">
+                    <th mat-header-cell *matHeaderCellDef> % of Continent</th>
+                    <td mat-cell *matCellDef="let item"> {{item.percDeathsOfContinent}}% </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </ng-container>
 </ng-container>
+
+<!-- Mobile View (Pixel 2)-->
+<div *mediaQuery="'(max-width: 411px)'" class="mobile-view-wrapper">
+    <mat-card *ngFor="let item of countryData$ | async">
+        <mat-card-header>
+            <mat-card-title>{{item.country}}</mat-card-title>
+            <mat-card-subtitle>{{item.continent}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-list>
+                <mat-list-item> New Cases: {{item.newCases}}</mat-list-item>
+                <mat-list-item> Active Cases: {{item.activeCases}}</mat-list-item>
+                <mat-list-item> Deaths: {{item.deaths}}</mat-list-item>
+                <mat-list-item> Active % of {{item.continent}}: {{item.percActiveOfContinent}}%</mat-list-item>
+                <mat-list-item> New % of {{item.continent}}: {{item.percNewOfContinent}}%</mat-list-item>
+                <mat-list-item> Deaths % of {{item.continent}}: {{item.percDeathsOfContinent}}%</mat-list-item>
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
+</div>

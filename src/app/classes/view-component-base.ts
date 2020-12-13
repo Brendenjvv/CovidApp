@@ -1,3 +1,4 @@
+import { OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export abstract class ViewComponentBase {
@@ -6,6 +7,7 @@ export abstract class ViewComponentBase {
     constructor() {
         this.onRefreshRequested = new Subject();
     }
+    
 
     public requestDataRefresh() {
         this.onRefreshRequested.next();
