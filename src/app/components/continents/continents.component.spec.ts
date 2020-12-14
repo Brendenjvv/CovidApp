@@ -1,6 +1,9 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CovidViewService } from 'src/app/services/covid-view.service';
 
 import { ContinentsComponent } from './continents.component';
+import { ContinentsModule } from './continents.module';
 
 describe('ContinentsComponent', () => {
   let component: ContinentsComponent;
@@ -8,9 +11,12 @@ describe('ContinentsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ContinentsComponent ]
+      imports: [
+        ContinentsModule,
+        HttpClientTestingModule
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

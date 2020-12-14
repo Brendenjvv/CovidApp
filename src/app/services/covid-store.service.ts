@@ -33,14 +33,11 @@ export class CovidStoreService {
         const stats$ = this.covidService.getStatistics();
 
         this.loading$.next(true);
-        const statResult$ = forkJoin([countries$, stats$]).pipe(
+        forkJoin([countries$, stats$]).pipe(
             tap((res) => {
                 this.covidData$.next(this.populateStore(res[0], res[1]));
             }),
-            finalize(() => this.loading$.next(false)))
-            .subscribe(() => {
-                statResult$.unsubscribe();
-            });
+            finalize(() => this.loading$.next(false))).subscribe();
     }
 
     private populateStore(countries: string[], stats: IStatistic[]) {
