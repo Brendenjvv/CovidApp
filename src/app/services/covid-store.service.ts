@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, forkJoin } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
+import { BehaviorSubject, forkJoin, Subject, throwError } from 'rxjs';
+import { catchError, finalize, tap } from 'rxjs/operators';
 import { IStatistic } from '../models/api/statistic';
 import { ICountryStatStoreState } from '../models/store/country-store-state';
 import { ICovidStoreState } from '../models/store/covid-store-state';
@@ -15,6 +15,7 @@ export class CovidStoreService {
     // Used a subject to simulate a store. Wasn't sure if I could use @ngrx/store since the spec calls for native angular libs. 
     covidData$ = new BehaviorSubject<ICovidStoreState>(undefined);
     loading$ = new BehaviorSubject<boolean>(false);
+    error$ = new Subject<string>();
 
     constructor(private covidService: CovidDataService) { }
 
@@ -33,7 +34,11 @@ export class CovidStoreService {
         const stats$ = this.covidService.getStatistics();
 
         this.loading$.next(true);
-        forkJoin([countries$, stats$]).pipe(
+        const statResult$ = forkJoin([countries$, stats$]).pipe(
+            catchError((err,caught) => {
+                this.error$.next(err);
+                return throwError(err);
+            }),
             tap((res) => {
                 this.covidData$.next(this.populateStore(res[0], res[1]));
             }),

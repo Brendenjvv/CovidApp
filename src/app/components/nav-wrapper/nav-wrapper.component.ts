@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { delay, delayWhen, takeUntil } from 'rxjs/operators';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ViewComponentBase } from '../../classes/view-component-base';
 import { CovidStoreService } from '../../services/covid-store.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'nav-wrapper',
@@ -12,17 +13,31 @@ import { CovidStoreService } from '../../services/covid-store.service';
 export class NavWrapperComponent implements OnInit, OnDestroy {
   busy$: Observable<boolean>;
   deactivated$: Subject<boolean> = new Subject();
+  storeError$: Subscription;
 
-  constructor(private covidStoreService: CovidStoreService) { }
+  constructor(
+    private covidStoreService: CovidStoreService,
+    private snackBar: MatSnackBar) {
+  }
 
   ngOnInit(): void {
     this.busy$ = this.covidStoreService.loading$;
+    this.storeError$ = this.covidStoreService.error$.subscribe(err => {
+      const errMessage = 'An error occurred while fetching data.';
+      console.error(errMessage, err);
+      this.showError(errMessage);
+    });
   }
 
   ngOnDestroy(): void {
     this.busy$ = null;
     this.deactivated$.next(true);
     this.deactivated$ = null;
+    if (this.storeError$) {
+      this.storeError$.unsubscribe();
+    }
+    this.storeError$ = null;
+
   }
 
   onActivate(event) {
@@ -37,5 +52,11 @@ export class NavWrapperComponent implements OnInit, OnDestroy {
 
   refreshStoreData(force = true) {
     this.covidStoreService.updateStore(force);
+  }
+
+  showError(errMessage: string) {
+    this.snackBar.open(errMessage, 'Dismiss', {
+      duration: 5000
+    })
   }
 }
