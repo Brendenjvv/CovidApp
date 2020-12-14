@@ -42,10 +42,7 @@ export class CovidStoreService {
             tap((res) => {
                 this.covidData$.next(this.populateStore(res[0], res[1]));
             }),
-            finalize(() => this.loading$.next(false)))
-            .subscribe(() => {
-                statResult$.unsubscribe();
-            });
+            finalize(() => this.loading$.next(false))).subscribe();
     }
 
     private populateStore(countries: string[], stats: IStatistic[]) {
