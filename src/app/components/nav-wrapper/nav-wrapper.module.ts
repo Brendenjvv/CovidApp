@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CountriesModule } from '../countries/countries.module';
 import { ContinentsModule } from '../continents/continents.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
     declarations: [
@@ -23,7 +24,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         MatProgressSpinnerModule,
         MatToolbarModule,
         MatButtonModule,
-        MatIconModule
+        MatIconModule,
+        MatSnackBarModule
     ],
     exports: [
         NavWrapperComponent
